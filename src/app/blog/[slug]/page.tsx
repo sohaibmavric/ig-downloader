@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { Fragment, Suspense } from "react";
+import AdSlot from "@/components/AdSlot";
 import JsonLd from "@/components/JsonLd";
 import { formatDate, POSTS, postBySlug, type Block } from "@/lib/blog";
 import { CONTENT } from "@/lib/content";
@@ -102,6 +103,13 @@ async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const toolName = CONTENT[post.tool].h1;
   const url = absoluteUrl(`/blog/${post.slug}`);
   const related = POSTS.filter((p) => p.slug !== post.slug).slice(0, 3);
+  // Place the mid-article ad just before the section heading closest to the
+  // middle, so it never splits a paragraph or a list of steps.
+  const headings = post.body.flatMap((b, i) => (b.type === "h2" && i > 2 ? [i] : []));
+  const midAdIndex = headings.reduce<number | undefined>(
+    (best, i) => (best === undefined || Math.abs(i - post.body.length / 2) < Math.abs(best - post.body.length / 2) ? i : best),
+    undefined,
+  );
 
   return (
     <div className="px-4 pb-16 pt-8 sm:pt-12">
@@ -144,8 +152,15 @@ async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
         </p>
 
         <div className="mt-8">
-          {post.body.map((block, i) => <Content key={i} block={block} />)}
+          {post.body.map((block, i) => (
+            <Fragment key={i}>
+              {i === midAdIndex && <AdSlot placement="article" className="my-8" />}
+              <Content block={block} />
+            </Fragment>
+          ))}
         </div>
+
+        <AdSlot placement="article" className="mt-12" />
 
         <aside className="mt-12 rounded-2xl border border-line bg-surface p-6 text-center">
           <p className="text-lg font-semibold">Try the {toolName}</p>

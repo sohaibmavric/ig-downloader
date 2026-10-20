@@ -41,6 +41,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Collapse ad slots AdSense couldn't fill, including their reserved space. */
+.ad-wrap:has(ins[data-ad-status="unfilled"]) {
+  display: none;
+}
+
 /* Indeterminate linear loader under the link input. */
 @keyframes loader-slide {
   from {

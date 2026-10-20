@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AdSlot from "@/components/AdSlot";
 import Downloader from "@/components/Downloader";
 import JsonLd from "@/components/JsonLd";
 import { POSTS, postsForTool } from "@/lib/blog";
@@ -118,6 +119,8 @@ export default function LandingPage({ tool: id }: { tool: ToolId }) {
           </ul>
         </div>
       </section>
+
+      <AdSlot placement="inContent" className="px-4 pb-16" />
 
       <section id="how" aria-labelledby="how-heading" className="scroll-mt-4 border-t border-line bg-surface px-4 py-16">
         <div className="mx-auto max-w-5xl">

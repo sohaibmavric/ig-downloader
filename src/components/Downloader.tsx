@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import AdSlot from "@/components/AdSlot";
 import { errorReason, linkType, track, type SubmitMethod } from "@/lib/analytics";
 import type { MediaItem, PublicMediaResult as MediaResult } from "@/lib/instagram";
 import { TOOLS, toolById, type ToolId } from "@/lib/tools";
@@ -220,6 +221,8 @@ export default function Downloader({ tool }: { tool: ToolId }) {
         )}
 
         {result && <Results result={result} tool={tool} />}
+        {/* Kept well below the download buttons to avoid accidental clicks. */}
+        {result && <AdSlot key={result.shortcode ?? result.kind} placement="results" className="mt-12" />}
       </div>
     </div>
   );

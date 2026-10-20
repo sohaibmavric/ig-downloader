@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import { ADSENSE_CLIENT } from "@/lib/ads";
 import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 import { POSTS } from "@/lib/blog";
 import { CONTENT } from "@/lib/content";
@@ -45,6 +46,8 @@ export const metadata: Metadata = {
     google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
     other: process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : undefined,
   },
+  // AdSense uses this tag to confirm site ownership during review.
+  other: ADSENSE_CLIENT ? { "google-adsense-account": ADSENSE_CLIENT } : undefined,
 };
 
 export const viewport: Viewport = {
@@ -61,6 +64,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        {ADSENSE_CLIENT && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+            crossOrigin="anonymous"
+          />
+        )}
         <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2 font-semibold" aria-label={`${SITE_NAME} home`}>
             <span className="grid h-8 w-8 place-items-center rounded-lg bg-accent text-white" aria-hidden>
