@@ -13,4 +13,6 @@ export const SITE_TAGLINE = "Instagram Video, Reels & Photo Downloader";
 export const SITE_DESCRIPTION =
   "Download Instagram videos, reels, photos, stories and audio in original quality. Free, fast, no login and no watermark.";
 
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "sohaib@mavrictech.com";
+
 export const absoluteUrl = (path: string) => `${SITE_URL}${path === "/" ? "" : path}`;

@@ -3,7 +3,9 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { GA_MEASUREMENT_ID } from "@/lib/analytics";
+import { POSTS } from "@/lib/blog";
 import { CONTENT } from "@/lib/content";
+import { LEGAL_PAGES } from "@/lib/legal";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import { TOOLS } from "@/lib/tools";
 import "./globals.css";
@@ -69,8 +71,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {SITE_NAME}
           </Link>
           <nav aria-label="Main" className="flex gap-1 text-sm text-muted">
-            <a href="#how" className="rounded-lg px-2.5 py-1.5 hover:bg-surface-strong hover:text-foreground">How it works</a>
-            <a href="#faq" className="rounded-lg px-2.5 py-1.5 hover:bg-surface-strong hover:text-foreground">FAQ</a>
+            <Link href="/blog" className="rounded-lg px-2.5 py-1.5 hover:bg-surface-strong hover:text-foreground">Guides</Link>
+            <Link href="/#how" className="hidden rounded-lg px-2.5 py-1.5 hover:bg-surface-strong hover:text-foreground sm:block">How it works</Link>
+            <Link href="/#faq" className="rounded-lg px-2.5 py-1.5 hover:bg-surface-strong hover:text-foreground">FAQ</Link>
           </nav>
         </header>
 
@@ -78,18 +81,46 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
         <footer className="border-t border-line px-4 py-10 text-sm">
           <div className="mx-auto max-w-5xl">
-            <nav aria-label="Downloaders" className="mb-6">
-              <h2 className="mb-3 font-semibold">Downloaders</h2>
-              <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-muted sm:grid-cols-3">
-                {TOOLS.map((t) => (
-                  <li key={t.id}>
-                    <Link href={t.path} className="hover:text-foreground">
-                      {CONTENT[t.id].h1}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            <div className="mb-8 grid gap-8 sm:grid-cols-[2fr_2fr_1fr]">
+              <nav aria-label="Downloaders">
+                <h2 className="mb-3 font-semibold">Downloaders</h2>
+                <ul className="space-y-2 text-muted">
+                  {TOOLS.map((t) => (
+                    <li key={t.id}>
+                      <Link href={t.path} className="hover:text-foreground">
+                        {CONTENT[t.id].h1}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+              <nav aria-label="Guides">
+                <h2 className="mb-3 font-semibold">
+                  <Link href="/blog" className="hover:text-accent">Guides</Link>
+                </h2>
+                <ul className="space-y-2 text-muted">
+                  {POSTS.map((p) => (
+                    <li key={p.slug}>
+                      <Link href={`/blog/${p.slug}`} className="hover:text-foreground">
+                        {p.title.replace(/ \(.*\)$/, "")}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+              <nav aria-label="Legal">
+                <h2 className="mb-3 font-semibold">{SITE_NAME}</h2>
+                <ul className="space-y-2 text-muted">
+                  {LEGAL_PAGES.map((p) => (
+                    <li key={p.path}>
+                      <Link href={p.path} className="hover:text-foreground">
+                        {p.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
             <p className="text-xs text-muted">
               © {SITE_NAME}. Not affiliated with Instagram or Meta. Only download content you have the right to use.
             </p>

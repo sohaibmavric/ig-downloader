@@ -12,6 +12,8 @@ export type PageContent = {
   features: { title: string; body: string }[];
   /** Longer explanatory copy, one string per paragraph. */
   article: { heading: string; paragraphs: string[] };
+  /** Additional in-depth sections shown after the article. */
+  sections?: { heading: string; paragraphs: string[]; bullets?: string[] }[];
   faqs: Faq[];
 };
 
@@ -50,6 +52,42 @@ export const CONTENT: Record<ToolId, PageContent> = {
         "Please only download content you own or have permission to use, and credit creators when you share their work.",
       ],
     },
+    sections: [
+      {
+        heading: "What you can download",
+        paragraphs: ["Snaplift works with every type of public Instagram content. Paste any of these links and the right download options appear automatically:"],
+        bullets: [
+          "Feed videos and IGTV: saved as MP4 at the original resolution.",
+          "Reels: vertical MP4 with the original sound.",
+          "Photos: full-size JPG, including every slide of carousel posts.",
+          "Stories and highlights: photos and videos from public accounts, while they're live or saved to a highlight.",
+          "Profile pictures: the largest version Instagram stores, far bigger than the circle in the app.",
+          "Audio: the soundtrack of any video or reel, converted to MP3.",
+        ],
+      },
+      {
+        heading: "Download Instagram videos on iPhone, Android and PC",
+        paragraphs: [
+          "Snaplift runs entirely in your browser, so it works the same way on every device and there's nothing to install.",
+          "On iPhone and iPad, use Safari: downloads go to the Files app (Downloads folder), and from there you can tap Share → Save Video to add them to Photos. On Android, files go straight to your Downloads folder and appear in your gallery. On Windows, Mac, Linux and Chromebook, they land in your browser's download folder.",
+          "You can add Snaplift to your phone's home screen from the browser's share menu, so it opens like an app whenever you need it.",
+        ],
+      },
+      {
+        heading: "Original quality, no watermark",
+        paragraphs: [
+          "Many downloaders re-encode videos or stamp their logo on them. Snaplift doesn't: it hands you the exact file Instagram serves, at the highest resolution available for that post, up to 1080p. The resolution is shown on every preview, so you know what you're getting before you save.",
+          "The only time anything is converted is when you choose MP3, where the audio track is encoded at 192 kbps.",
+        ],
+      },
+      {
+        heading: "Is it legal to download Instagram videos?",
+        paragraphs: [
+          "Saving public content for personal, offline viewing is generally treated very differently from redistributing it. The content still belongs to its creator, so reposting, selling or claiming it as your own without permission can infringe their copyright and break Instagram's rules.",
+          "A good rule of thumb: download freely for yourself, and ask before you share. When you do repost with permission, credit the original creator.",
+        ],
+      },
+    ],
     faqs: [
       { q: "How do I download an Instagram video?", a: "Copy the video's link from Instagram (Share → Copy link), paste it into the box above and press Download MP4 on the preview that appears." },
       { q: "What quality are the downloads?", a: "You get the same file Instagram serves, at the highest resolution the creator uploaded, up to 1080p. Nothing is compressed or watermarked." },
