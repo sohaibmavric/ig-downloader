@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
+  // ffmpeg-static resolves its binary path at runtime; keep it out of the bundle.
+  serverExternalPackages: ["ffmpeg-static"],
   partialPrefetching: true,
   turbopack: {
     rules: {
