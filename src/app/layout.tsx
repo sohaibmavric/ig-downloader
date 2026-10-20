@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 import { CONTENT } from "@/lib/content";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import { TOOLS } from "@/lib/tools";
@@ -94,6 +96,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </div>
         </footer>
       </body>
+      {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
     </html>
   );
 }

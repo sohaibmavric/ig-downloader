@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { errorReason, linkType, track, type SubmitMethod } from "@/lib/analytics";
 import type { MediaItem, PublicMediaResult as MediaResult } from "@/lib/instagram";
 import { TOOLS, toolById, type ToolId } from "@/lib/tools";
 
@@ -30,7 +31,7 @@ export default function Downloader({ tool }: { tool: ToolId }) {
   const abortRef = useRef<AbortController | null>(null);
   const lastSubmitted = useRef("");
 
-  const submit = useCallback(async (link: string) => {
+  const submit = useCallback(async (link: string, method: SubmitMethod) => {
     const value = link.trim();
     if (!value) return;
     // A newer link replaces any request still in flight.
@@ -41,25 +42,44 @@ export default function Downloader({ tool }: { tool: ToolId }) {
     setLoading(true);
     setError(null);
     setResult(null);
+
+    const type = linkType(value);
+    const started = performance.now();
+    let status = 0;
+    track("link_submitted", { tool, link_type: type, method });
     try {
       const res = await fetch(`/api/resolve?url=${encodeURIComponent(value)}`, { signal: controller.signal });
+      status = res.status;
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Something went wrong.");
-      setResult(data as MediaResult);
+      if (!res.ok) {
+        track("media_error", { tool, link_type: type, reason: errorReason(status, data.loginRequired), status });
+        throw new Error(data.error ?? "Something went wrong.");
+      }
+      const media = data as MediaResult;
+      setResult(media);
+      track("media_resolved", {
+        tool,
+        link_type: type,
+        item_count: media.items.length,
+        video_count: media.items.filter((i) => i.type === "video").length,
+        image_count: media.items.filter((i) => i.type === "image").length,
+        duration_ms: Math.round(performance.now() - started),
+      });
       requestAnimationFrame(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
     } catch (err) {
       if (controller.signal.aborted) return;
+      if (status === 0) track("media_error", { tool, link_type: type, reason: "network", status });
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       if (abortRef.current === controller) setLoading(false);
     }
-  }, []);
+  }, [tool]);
 
   // Auto-load once the field holds a complete Instagram link (typed or dropped).
   useEffect(() => {
     const value = input.trim();
     if (!isInstagramUrl(value) || value === lastSubmitted.current) return;
-    const timer = setTimeout(() => submit(value), 500);
+    const timer = setTimeout(() => submit(value, "typed"), 500);
     return () => clearTimeout(timer);
   }, [input, submit]);
 
@@ -69,7 +89,7 @@ export default function Downloader({ tool }: { tool: ToolId }) {
     if (!isInstagramUrl(text)) return;
     e.preventDefault();
     setInput(text);
-    submit(text);
+    submit(text, "paste");
   };
 
   // Support deep links: /?url=https://www.instagram.com/reel/...
@@ -78,7 +98,7 @@ export default function Downloader({ tool }: { tool: ToolId }) {
     if (!link) return;
     const timer = setTimeout(() => {
       setInput(link);
-      submit(link);
+      submit(link, "deeplink");
     }, 0);
     return () => clearTimeout(timer);
   }, [submit]);
@@ -87,13 +107,15 @@ export default function Downloader({ tool }: { tool: ToolId }) {
     try {
       const text = await navigator.clipboard.readText();
       setInput(text);
-      submit(text);
+      submit(text, "paste_button");
     } catch {
+      track("clipboard_blocked", { tool });
       setError("Clipboard access was blocked. Paste the link manually.");
     }
   };
 
   const clear = () => {
+    track("link_cleared", { tool });
     abortRef.current?.abort();
     abortRef.current = null;
     lastSubmitted.current = "";
@@ -129,7 +151,7 @@ export default function Downloader({ tool }: { tool: ToolId }) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          submit(input);
+          submit(input, "enter");
         }}
         aria-busy={loading}
         className="relative mx-auto flex max-w-2xl items-center overflow-hidden rounded-2xl border border-line bg-surface p-2 shadow-sm transition focus-within:border-accent focus-within:ring-4 focus-within:ring-accent/15"
@@ -197,13 +219,13 @@ export default function Downloader({ tool }: { tool: ToolId }) {
           </div>
         )}
 
-        {result && <Results result={result} audioFirst={tool === "audio"} />}
+        {result && <Results result={result} tool={tool} />}
       </div>
     </div>
   );
 }
 
-function Results({ result, audioFirst }: { result: MediaResult; audioFirst: boolean }) {
+function Results({ result, tool }: { result: MediaResult; tool: ToolId }) {
   const multiple = result.items.length > 1;
   return (
     <section className={`mx-auto mt-8 ${multiple ? "max-w-3xl" : "max-w-sm"}`}>
@@ -212,7 +234,16 @@ function Results({ result, audioFirst }: { result: MediaResult; audioFirst: bool
       )}
       <div className={`grid gap-4 ${multiple ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"}`}>
         {result.items.map((item, i) => (
-          <MediaCard key={item.url} item={item} name={baseName(result, i)} audioFirst={audioFirst} index={multiple ? i + 1 : undefined} />
+          <MediaCard
+            key={item.url}
+            item={item}
+            name={baseName(result, i)}
+            audioFirst={tool === "audio"}
+            index={multiple ? i + 1 : undefined}
+            onDownload={(format) =>
+              track("download_click", { tool, format, item_index: i + 1, item_count: result.items.length })
+            }
+          />
         ))}
       </div>
     </section>
@@ -226,7 +257,19 @@ function qualityLabel(item: MediaItem) {
   return short >= 1080 ? "1080p" : short >= 720 ? "720p" : `${short}p`;
 }
 
-function MediaCard({ item, name, audioFirst, index }: { item: MediaItem; name: string; audioFirst: boolean; index?: number }) {
+function MediaCard({
+  item,
+  name,
+  audioFirst,
+  index,
+  onDownload,
+}: {
+  item: MediaItem;
+  name: string;
+  audioFirst: boolean;
+  index?: number;
+  onDownload: (format: "mp4" | "jpg" | "mp3") => void;
+}) {
   const isVideo = item.type === "video";
   const ext = isVideo ? "mp4" : "jpg";
   const quality = qualityLabel(item);
@@ -259,20 +302,20 @@ function MediaCard({ item, name, audioFirst, index }: { item: MediaItem; name: s
       <div className="grid gap-2 p-3">
         {isVideo && audioFirst ? (
           <>
-            <a href={audioUrl(item.url, name)} className={`${primaryBtn} ${focusRing}`}>
+            <a href={audioUrl(item.url, name)} onClick={() => onDownload("mp3")} className={`${primaryBtn} ${focusRing}`}>
               <DownloadIcon /> Download MP3
             </a>
-            <a href={mediaUrl(item.url, `${name}.${ext}`)} className={`${secondaryBtn} ${focusRing}`}>
+            <a href={mediaUrl(item.url, `${name}.${ext}`)} onClick={() => onDownload(ext)} className={`${secondaryBtn} ${focusRing}`}>
               Download MP4
             </a>
           </>
         ) : (
           <>
-            <a href={mediaUrl(item.url, `${name}.${ext}`)} className={`${primaryBtn} ${focusRing}`}>
+            <a href={mediaUrl(item.url, `${name}.${ext}`)} onClick={() => onDownload(ext)} className={`${primaryBtn} ${focusRing}`}>
               <DownloadIcon /> Download {isVideo ? "MP4" : "JPG"}
             </a>
             {isVideo && (
-              <a href={audioUrl(item.url, name)} className={`${secondaryBtn} ${focusRing}`}>
+              <a href={audioUrl(item.url, name)} onClick={() => onDownload("mp3")} className={`${secondaryBtn} ${focusRing}`}>
                 <MusicIcon /> Extract MP3
               </a>
             )}
