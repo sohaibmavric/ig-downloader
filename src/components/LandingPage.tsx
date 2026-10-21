@@ -17,7 +17,7 @@ export function toolMetadata(id: ToolId): Metadata {
   const images = [{ url: "/opengraph-image", width: 1200, height: 630, alt: content.h1 }];
   return {
     // The home page title already leads with the brand-free keyword; the
-    // layout template adds "| Snaplift" to the others.
+    // layout template adds "| IG Video Exporter" to the others.
     title: isHome ? { absolute: `${content.title} | ${SITE_NAME}` } : content.title,
     description: content.description,
     keywords: content.keywords,

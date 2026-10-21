@@ -19,14 +19,14 @@ export type PageContent = {
 
 export const STEPS = [
   { title: "Copy the link", body: "In Instagram, tap ··· or Share on a post, reel, story or profile and choose Copy link." },
-  { title: "Paste it here", body: "Paste the link into the box. Snaplift detects the content type and loads it instantly." },
+  { title: "Paste it here", body: "Paste the link into the box. IG Video Exporter detects the content type and loads it instantly." },
   { title: "Save the file", body: "Preview the media, then download the original MP4 or JPG, or extract the audio as MP3." },
 ];
 
 const SHARED_FAQS: Faq[] = [
-  { q: "Is Snaplift free?", a: "Yes. Every tool is free to use, with no sign-up and no daily limit for normal use." },
-  { q: "Do I need to log in to Instagram?", a: "No. You only paste a link. Snaplift never asks for your Instagram username or password." },
-  { q: "Can I download from private accounts?", a: "No. Snaplift only works with content that is publicly visible on Instagram." },
+  { q: "Is IG Video Exporter free?", a: "Yes. Every tool is free to use, with no sign-up and no daily limit for normal use." },
+  { q: "Do I need to log in to Instagram?", a: "No. You only paste a link. IG Video Exporter never asks for your Instagram username or password." },
+  { q: "Can I download from private accounts?", a: "No. IG Video Exporter only works with content that is publicly visible on Instagram." },
   { q: "Do you store the files I download?", a: "No. Media is streamed from Instagram to your browser and is never saved on our servers." },
 ];
 
@@ -47,7 +47,7 @@ export const CONTENT: Record<ToolId, PageContent> = {
     article: {
       heading: "Download Instagram videos without an app",
       paragraphs: [
-        "Instagram lets you save posts to a collection, but not to your device. Snaplift fills that gap: paste the link of any public video and you get the original MP4 file, ready to watch offline, back up, or use in your own edits.",
+        "Instagram lets you save posts to a collection, but not to your device. IG Video Exporter fills that gap: paste the link of any public video and you get the original MP4 file, ready to watch offline, back up, or use in your own edits.",
         "The downloader detects the link type automatically, so the same box handles feed videos, reels, carousels, stories and profile pictures. Carousels show every slide separately, and each video can also be converted to MP3 if you only need the sound.",
         "Please only download content you own or have permission to use, and credit creators when you share their work.",
       ],
@@ -55,7 +55,7 @@ export const CONTENT: Record<ToolId, PageContent> = {
     sections: [
       {
         heading: "What you can download",
-        paragraphs: ["Snaplift works with every type of public Instagram content. Paste any of these links and the right download options appear automatically:"],
+        paragraphs: ["IG Video Exporter works with every type of public Instagram content. Paste any of these links and the right download options appear automatically:"],
         bullets: [
           "Feed videos and IGTV: saved as MP4 at the original resolution.",
           "Reels: vertical MP4 with the original sound.",
@@ -68,15 +68,15 @@ export const CONTENT: Record<ToolId, PageContent> = {
       {
         heading: "Download Instagram videos on iPhone, Android and PC",
         paragraphs: [
-          "Snaplift runs entirely in your browser, so it works the same way on every device and there's nothing to install.",
+          "IG Video Exporter runs entirely in your browser, so it works the same way on every device and there's nothing to install.",
           "On iPhone and iPad, use Safari: downloads go to the Files app (Downloads folder), and from there you can tap Share → Save Video to add them to Photos. On Android, files go straight to your Downloads folder and appear in your gallery. On Windows, Mac, Linux and Chromebook, they land in your browser's download folder.",
-          "You can add Snaplift to your phone's home screen from the browser's share menu, so it opens like an app whenever you need it.",
+          "You can add IG Video Exporter to your phone's home screen from the browser's share menu, so it opens like an app whenever you need it.",
         ],
       },
       {
         heading: "Original quality, no watermark",
         paragraphs: [
-          "Many downloaders re-encode videos or stamp their logo on them. Snaplift doesn't: it hands you the exact file Instagram serves, at the highest resolution available for that post, up to 1080p. The resolution is shown on every preview, so you know what you're getting before you save.",
+          "Many downloaders re-encode videos or stamp their logo on them. IG Video Exporter doesn't: it hands you the exact file Instagram serves, at the highest resolution available for that post, up to 1080p. The resolution is shown on every preview, so you know what you're getting before you save.",
           "The only time anything is converted is when you choose MP3, where the audio track is encoded at 192 kbps.",
         ],
       },
@@ -91,7 +91,7 @@ export const CONTENT: Record<ToolId, PageContent> = {
     faqs: [
       { q: "How do I download an Instagram video?", a: "Copy the video's link from Instagram (Share → Copy link), paste it into the box above and press Download MP4 on the preview that appears." },
       { q: "What quality are the downloads?", a: "You get the same file Instagram serves, at the highest resolution the creator uploaded, up to 1080p. Nothing is compressed or watermarked." },
-      { q: "Does it work on iPhone?", a: "Yes. Open Snaplift in Safari, paste the link and tap Download. The file saves to the Files app, and you can move it to Photos from there." },
+      { q: "Does it work on iPhone?", a: "Yes. Open IG Video Exporter in Safari, paste the link and tap Download. The file saves to the Files app, and you can move it to Photos from there." },
       ...SHARED_FAQS,
     ],
   },
@@ -106,19 +106,19 @@ export const CONTENT: Record<ToolId, PageContent> = {
       { title: "Sound included", body: "Reels download with their original audio track, perfectly in sync." },
       { title: "Full vertical quality", body: "The 9:16 video is saved at the resolution the creator uploaded, up to 1080×1920." },
       { title: "Audio only option", body: "Need just the music or voiceover? Extract the reel's soundtrack as MP3 in one tap." },
-      { title: "No watermark", body: "Snaplift adds no logo or branding to the file." },
+      { title: "No watermark", body: "IG Video Exporter adds no logo or branding to the file." },
     ],
     article: {
       heading: "Save reels for offline viewing and inspiration",
       paragraphs: [
         "Reels disappear into the feed fast. Downloading the ones you care about lets you watch them offline, keep a library of ideas for your own content, or archive your own reels in their original quality.",
-        "Paste the reel link and Snaplift shows a preview with the video's real resolution. Download the MP4 directly, or use Extract MP3 to keep only the audio.",
+        "Paste the reel link and IG Video Exporter shows a preview with the video's real resolution. Download the MP4 directly, or use Extract MP3 to keep only the audio.",
       ],
     },
     faqs: [
       { q: "How do I download a reel with sound?", a: "Copy the reel link, paste it above and tap Download MP4. Audio is always included in the file." },
       { q: "Can I download someone else's reel?", a: "You can download public reels for personal use. Ask the creator for permission before reposting, and always give credit." },
-      { q: "Why is my reel low resolution?", a: "Snaplift saves the best version Instagram has. If the creator uploaded a low-resolution clip, that is the highest quality available." },
+      { q: "Why is my reel low resolution?", a: "IG Video Exporter saves the best version Instagram has. If the creator uploaded a low-resolution clip, that is the highest quality available." },
       ...SHARED_FAQS,
     ],
   },
@@ -138,7 +138,7 @@ export const CONTENT: Record<ToolId, PageContent> = {
     article: {
       heading: "Download Instagram pictures in full size",
       paragraphs: [
-        "Screenshots crop and compress photos. Snaplift downloads the actual image file from Instagram instead, so you keep the full resolution and colours of the original post.",
+        "Screenshots crop and compress photos. IG Video Exporter downloads the actual image file from Instagram instead, so you keep the full resolution and colours of the original post.",
         "For carousel posts, every slide is listed with its own preview and download button, numbered in the same order as on Instagram.",
       ],
     },
@@ -164,14 +164,14 @@ export const CONTENT: Record<ToolId, PageContent> = {
     article: {
       heading: "Keep stories after 24 hours",
       paragraphs: [
-        "Stories vanish after a day. Snaplift lets you keep a copy of public stories and highlights, which is useful for saving your own stories in original quality or keeping information you want to refer back to.",
+        "Stories vanish after a day. IG Video Exporter lets you keep a copy of public stories and highlights, which is useful for saving your own stories in original quality or keeping information you want to refer back to.",
         "Paste a story link (instagram.com/stories/username/…) or a highlight link (instagram.com/stories/highlights/…). Every item in the story appears with its own download button.",
       ],
     },
     faqs: [
       { q: "How do I get a story link?", a: "Open the story in Instagram, tap ··· or the share icon and choose Copy link. You can also use instagram.com/stories/username/." },
       { q: "Can I download expired stories?", a: "Only if they were saved to a highlight. Expired stories that aren't in a highlight are no longer available on Instagram." },
-      { q: "Does the account know I downloaded their story?", a: "Snaplift fetches stories on its own servers, not from your Instagram account." },
+      { q: "Does the account know I downloaded their story?", a: "IG Video Exporter fetches stories on its own servers, not from your Instagram account." },
       ...SHARED_FAQS,
     ],
   },
@@ -191,7 +191,7 @@ export const CONTENT: Record<ToolId, PageContent> = {
     article: {
       heading: "Download the sound from Instagram reels",
       paragraphs: [
-        "Heard a song, voiceover or sound you want to keep? Paste the reel link and Snaplift converts its audio track to MP3, ready for any music player or editing app.",
+        "Heard a song, voiceover or sound you want to keep? Paste the reel link and IG Video Exporter converts its audio track to MP3, ready for any music player or editing app.",
         "Many reels use licensed music. Downloads are for personal use; check the rights before using a sound in your own published work.",
       ],
     },
@@ -217,7 +217,7 @@ export const CONTENT: Record<ToolId, PageContent> = {
     article: {
       heading: "View Instagram profile pictures in HD",
       paragraphs: [
-        "Instagram only shows profile pictures as a small circle and doesn't let you zoom in. Snaplift loads the full-size image so you can actually see it, and save it if you need to.",
+        "Instagram only shows profile pictures as a small circle and doesn't let you zoom in. IG Video Exporter loads the full-size image so you can actually see it, and save it if you need to.",
       ],
     },
     faqs: [
