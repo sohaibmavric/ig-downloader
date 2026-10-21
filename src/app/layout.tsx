@@ -73,11 +73,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         )}
         <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2 font-semibold" aria-label={`${SITE_NAME} home`}>
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-accent text-white" aria-hidden>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14" />
-              </svg>
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element -- static SVG app icon */}
+            <img src="/icon.svg" alt="" width={32} height={32} className="h-8 w-8" />
             {SITE_NAME}
           </Link>
           <nav aria-label="Main" className="flex gap-1 text-sm text-muted">
